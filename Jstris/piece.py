@@ -9,6 +9,7 @@ class Piece:
         self.rotation = 0
         self.matrix = self._set_matrix(self.piece)
         self.pos = self._set_initial_pos(self.piece,self.rotation)
+        self.initial = self.pos[0]
 
     
     def get_piece(self, colour: tuple):
@@ -118,7 +119,19 @@ class Piece:
             count += 1
         return count
 
+    def move_left(self,count=1, wall = False):
+        if wall:
+            self.pos = (self.pos[0] - self._moves_to_left_wall(), self.pos[1])
+        elif self._moves_to_left_wall() - count >= 0:
+            self.pos = (self.pos[0] - count, self.pos[1])
+    
+    def move_right(self,count=1, wall = False):
+        if wall:
+            self.pos = (self.pos[0] + self._moves_to_right_wall(), self.pos[1])
+        elif self._moves_to_right_wall() - count >= 0:
+            self.pos = (self.pos[0] + count, self.pos[1])
 
+    
 def transpose(matrix):
     new_matrix = [[0 for _ in range(len(matrix))] for _ in range(len(matrix[0]))]
     for i in range(len(matrix)):
